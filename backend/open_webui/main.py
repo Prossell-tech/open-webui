@@ -1388,6 +1388,7 @@ async def chat_completion(
                 )
                 else {}
             ),
+            "full_context": form_data.get("full_context", False)
         }
 
         request.state.metadata = metadata
