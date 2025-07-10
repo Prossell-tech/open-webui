@@ -14,6 +14,8 @@
 	import Knowledge from './Commands/Knowledge.svelte';
 	import Models from './Commands/Models.svelte';
 	import Spinner from '$lib/components/common/Spinner.svelte';
+	import { getFileById } from '$lib/apis/files';
+	import { WEBUI_API_BASE_URL } from '$lib/constants';
 
 	export let prompt = '';
 	export let files = [];
@@ -76,10 +78,16 @@
 						data: e.detail
 					});
 				}}
-				on:select={(e) => {
+				on:select={async (e) => {
 					console.log(e);
 					if (files.find((f) => f.id === e.detail.id)) {
 						return;
+					}
+
+					// knowledge base content selected
+					if (e.detail.collection) {
+						e.detail.file = await getFileById(localStorage.token, e.detail.id)
+						e.detail.url = `${WEBUI_API_BASE_URL}/files/${e.detail.id}`;
 					}
 
 					files = [
