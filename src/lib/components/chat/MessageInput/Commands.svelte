@@ -84,8 +84,17 @@
 						return;
 					}
 
-					// knowledge base content selected
-					if (e.detail.collection) {
+					// knowledge base was selected as a collection
+					if (e.detail.type === "collection") {
+						e.detail.file = {
+							data: {
+								content: "This is a knowledge base."
+							}
+						}
+					}
+
+					// knowledge base content is selected as a file
+					if (e.detail.type === "file") {
 						e.detail.file = await getFileById(localStorage.token, e.detail.id)
 						e.detail.url = `${WEBUI_API_BASE_URL}/files/${e.detail.id}`;
 					}
