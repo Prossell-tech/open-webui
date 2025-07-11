@@ -470,7 +470,7 @@ def get_sources_from_files(
                 "documents": [[doc.get("content") for doc in file.get("docs")]],
                 "metadatas": [[doc.get("metadata") for doc in file.get("docs")]],
             }
-        elif file.get("context") == "full":
+        elif file.get("context") == "full" and file.get("type") != "collection":
             # Manual Full Mode Toggle
             query_result = {
                 "documents": [[file.get("file").get("data", {}).get("content")]],
@@ -546,7 +546,7 @@ def get_sources_from_files(
                 log.debug(f"skipping {file} as it has already been extracted")
                 continue
 
-            if full_context:
+            if full_context or file.get("context") == "full":
                 try:
                     query_result = get_all_items_from_collections(collection_names)
                 except Exception as e:
